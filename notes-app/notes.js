@@ -1,5 +1,20 @@
-const fs = require("fs");
-const chalk = require("chalk");
+// const fs = require("fs");
+// const chalk = require("chalk");
+
+import fs from './fs';
+import chalk from './chalk';
+
+const clearList = () => {
+    fs.writeFileSync("notes.json", "");
+    try {
+      const dataBuffer = fs.readFileSync("notes.json");
+      const dataJSON = dataBuffer.toString();
+      return JSON.parse(dataJSON);
+    } catch (e) {
+      return [];
+    }
+  };
+  
 
 const getNotes = () => {
     return "your notes..";
@@ -12,7 +27,7 @@ const addNote = (title, body) => {
     // })
 
     const duplicateNote = notes.find((note)=> {
-        note.title === title;
+        return note.title === title;
     })
 
     if (!duplicateNote) {
@@ -21,7 +36,6 @@ const addNote = (title, body) => {
             body: body,
         })
         console.log(chalk.green.inverse("note added!"));
-
         saveNotes(notes);
 
     } else {
@@ -49,10 +63,17 @@ const removeNote = (title) => {
 const listNotes = () => {
     const notes = loadNotes();
     console.log(chalk.inverse("your notes:" ))
+    let numNotesPrinted = 0
+    // notes.forEach(element => {
+    //     console.log(element.title);
+    // });
 
-    notes.forEach(element => {
-        console.log(element.title);
-    });
+    for (let i=0; i<notes.length; i++) {
+        console.log(notes[i].title);
+        numNotesPrinted++;
+    }
+
+    return numNotesPrinted;
 }
 
 const readNotes = (title) => {
@@ -69,6 +90,8 @@ const readNotes = (title) => {
     else {
         console.log(chalk.red.inverse("note not found"));
     }
+
+    return `${note.title}: ${note.body}`;
 }
 
 
@@ -87,10 +110,14 @@ const loadNotes = () => {
     }
 }
 
-module.exports = {
-    getNotes: getNotes,
-    addNote: addNote,
-    removeNote: removeNote,
-    listNotes: listNotes,
-    readNotes: readNotes,
-}
+// module.exports = {
+//     getNotes: getNotes,
+//     addNote: addNote,
+//     removeNote: removeNote,
+//     listNotes: listNotes,
+//     readNotes: readNotes,
+//     loadNotes,
+//     clearList,
+// }
+
+export default notes;
