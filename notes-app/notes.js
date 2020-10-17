@@ -1,8 +1,6 @@
 // const fs = require("fs");
 // const chalk = require("chalk");
 
-import fs from './fs';
-import chalk from './chalk';
 
 const clearList = () => {
     fs.writeFileSync("notes.json", "");
