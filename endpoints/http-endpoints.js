@@ -6,7 +6,9 @@ const bodyParser = require("body-parser");
 const port = 4000;
 
 const server = http.createServer(function (req, res) {
+    console.log(req.method);
     if (req.method === "GET") {
+        console.log("in get");
         handleGetRequest(req, res);
     }
     else if (req.method === "POST") {
@@ -23,10 +25,12 @@ const server = http.createServer(function (req, res) {
 const handleGetRequest = (req,res) => {
     if (req.url === "/products") {
         const jsonProducts = JSON.stringify(products);
+        res.writeHead(200, { "Content-Type": "application/json" });
         res.end(jsonProducts);
     }
     else if (req.url === "/users") {
         const jsonUsers = JSON.stringify(users);
+        res.writeHead(200, { "Content-Type": "application/json" });
         res.end(jsonUsers);
     }
     else {
@@ -36,9 +40,32 @@ const handleGetRequest = (req,res) => {
 }
 
 const handlePostRequest = (req,res) => {
-   
+    if (req.url === "/product") {
+        parseBody(req, (productData) => {
+           if (productData.name && productData.price && Object.keys(productData).length === 2) {
+              products.push({name:productData.name, price:productData.price});
+              const productJson = JSON.stringify(products);
+              res.writeHead(200, { "Content-Type": "application/json" });
+              res.end(productJson);
+           }
+        });
+     }
+  
+     if (req.url === "/user") {
+        parseBody(req, (userData) => {
+           if (userData.name && userData.age && Object.keys(userData).length === 2) {
+              const nextUserId = users[users.length-1].id+1;
+              users.push({name:userData.name, age:userData.age, id:nextUserId});
+              const userJson = JSON.stringify(users);
+              res.writeHead(200, { "Content-Type": "application/json" });
+              res.end(userJson);
+           }
+        });
+     }
     
 }
+
+
 
 
 const parseBody = (req, callback) => {
@@ -89,104 +116,4 @@ let productsId = 2;
 server.listen(port, () => {
     console.log("server up on port" + port);
 })
-
-
-
-// //add product
-// app.post("/product", (req, res) => {
-//     const productData = req.body;
-//     if (productData.name && productData.price && Object.keys(productData).length === 2) {
-//         const newProduct = {
-//             name: productData.name,
-//             price: productData.price,
-//             id: productsId,
-//         }
-//         productsId++;
-//         products.push(newProduct);
-//         res.status(200);
-//         res.send(newProduct);
-//     }
-//     else {
-//         res.send("error");
-//     }
-// })
-
-
-
-
-// //add user
-// app.post("/user", (req, res) => {
-//     const userData = req.body;
-//     if (userData.name && userData.age && Object.keys(userData).length === 2) {
-//         const newUser = {
-//             name: userData.name,
-//             age: userData.age,
-//             id: userId,
-//         }
-//         userId++;
-//         users.push(newUser);
-//         res.status(200);
-//         res.send(newUser);
-//     }
-//     else {
-//         res.send("error");
-//     }
-// })
-
-// //delete user
-// app.delete("/user", (req, res) => {
-//     let userToDelete;
-//     if (!req.query.id) {
-//         return res.send({
-//             error: "you must provide an id",
-//         })
-//     }
-
-//     for (let i = 0; i < users.length; i++) {
-//         if (Number(users[i].id) === Number(req.query.id)) {
-//             userToDelete = i;
-//             users.splice(userToDelete, 1);
-//             break;
-//         }
-//     }
-
-//     // console.log(req.query.id);
-//     // console.log(users[0].id);
-//     res.status(200);
-//     res.send(users);
-// })
-
-// //edit user
-// app.put("/user", (req, res) => {
-//     const userData = req.body;
-//     let userToUpdate;
-//     if (!req.query.id) {
-//         return res.send({
-//             error: "you must provide an id",
-//         })
-//     }
-//     if (userData.name || userData.age) {
-//         for (let i = 0; i < users.length; i++) {
-//             if (Number(users[i].id) === Number(req.query.id)) {
-//                 userToUpdate = i;
-//             }
-//             const updatedUser = {
-//                 name: userData.name,
-//                 age: userData.age,
-//                 id: req.query.id
-//             }
-//             users.splice(userToUpdate, 1, updatedUser);
-//             break;
-//         }
-
-//         res.status(200);
-//     }
-//     else {
-//         return res.send({
-//             error: "invalid info",
-//         })
-//     }
-
-//     res.send(users);
-// })
 
