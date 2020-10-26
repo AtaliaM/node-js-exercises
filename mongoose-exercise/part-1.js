@@ -100,14 +100,18 @@ const createRestaurant = (name, borough, cuisine, Restaurant_id, address) => {
 
 createRestaurant("Starbucks", "Beit Hanania", "coffee and such", 123, 
 {building:"building", street:"street", zipcode:234, coord: ["-73.856077", "40.848447"]});
-// createRestaurant("KFC", "London", "fried chicken", 1234);
-// createRestaurant("Cheescake Factory", "New York", "cakes", 12);
-// createRestaurant("McDonalds", "London", "Hamburger", 11111);
-// createRestaurant("Burger King", "Tokyo", "Hamburger", 232323);
+createRestaurant("KFC", "London", "fried chicken", 1234);
+createRestaurant("Cheescake Factory", "New York", "cakes", 12);
+createRestaurant("McDonalds", "London", "Hamburger", 11111);
+createRestaurant("Burger King", "Tokyo", "Hamburger", 232323);
 
 // Let’s add more objects to the restaurants
 // address  {building, street, zipcode, coord: []}
 // Add validation to coord (lat, lon)
 
 
+// Exercise 3 (REST+ MONGOOSE): 
+// Create POST endpoint /restaurant that saves item to DB
+// Create GET endpoint /restaurant/:id (or any other method) to fetch the relevant item 
 
+module.exports = Restaurant;
