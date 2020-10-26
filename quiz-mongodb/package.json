@@ -1,8 +1,8 @@
 {
-  "name": "task-manager",
+  "name": "quiz-mongodb",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "mongodb-quiz.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,8 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mongodb": "^3.6.2",
-    "mongoose": "^5.10.10",
-    "validator": "^13.1.17"
+    "mongodb": "^3.6.2"
   }
 }

@@ -1,0 +1,53 @@
+display the fields restaurant_id, name, borough and cuisine, 
+but exclude the field _id for all the documents in the collection restaurant.
+
+db.getCollection('restaurant').find({}, {"name": 1, "borough":1,"cuisine":1, _id: 0})
+
+display the first 5 restaurant which is in the borough Bronx.
+
+db.getCollection('restaurant').find({"borough":"Bronx"}).limit(5)
+
+display the next 5 restaurants after skipping first 5 which are in the borough Bronx.
+
+db.getCollection('restaurant').find({"borough":"Bronx"}).skip(5)
+
+find the restaurants who achieved a score more than 90.
+
+db.getCollection('restaurant').find({"grades.score":{$gt:90}})
+
+find the restaurants that achieved a score is more than 80 but less than 100.
+
+db.getCollection('restaurant').find({"grades.score":{$gt:80, $lt:100}})
+
+find the restaurants which locate in a latitude value less than -95.754168
+
+db.getCollection('restaurant').find({"address.coord":{$lt:-95.754168}})
+
+find the restaurants that do not prepare any cuisine of ‘American’ and their
+grade score more than 70 and lattitude less than -65.754168
+
+
+db.getCollection('restaurant').find({"cuisine":{$ne:"American "},"address.coord":{$lt:-65.754168},"grades.score":{$gt:70}})
+
+db.getCollection('resturants').find({"cuisine":{ $ne: "American " },"address.coord.0":{$lt:-65.754168},"grades.score":{$gt: 70 } })
+
+Write a MongoDB query to find the restaurants which do not prepare any cuisine of ‘American ’ and achieved a grade point ‘A’ not belongs to the borough Brooklyn.
+The document must be displayed according to the cuisine in descending order.
+
+db.getCollection('restaurant').find({"cuisine":{$ne:"American "},"grades.grade":"A", "borough":{$ne: "Brooklyn"}}).sort({"cuisine":-1})
+
+Write a MongoDB query to find the restaurants which belong to the borough Bronx and prepared either American or Chinese dish.
+
+db.getCollection('restaurant').find({ "borough": "Bronx" , $or : [{ "cuisine" : "American " },{ "cuisine" : "Chinese" }] }
+
+Write a MongoDB query to find the restaurant Id, name, borough and cuisine for those restaurants which are not belonging to
+the borough Staten Island or Queens or Bronx or Brooklyn (find 10)
+
+db.getCollection('restaurant').find({ "borough": {$nin : ["Brooklyn", "Bronx", "Queens", "Staten Island"]}},{"name": 1,"borough":1,"cuisine":1, _id: 1}).limit(10)
+
+
+
+
+
+
+

@@ -70,33 +70,84 @@ MongoClient.connect(connectionURL, {useNewUrlParser:true, useUnifiedTopology:tru
 
 
     //to search by object id, we must convert it first to Binary like this = new ObjectID("id here")
-    db.collection('users').findOne({name:"Atalia"}, (error,document)=> {
-        if(error) {
-            return console.log("Unable to fetch user");
-        }
-        console.log(document);
+    // db.collection('users').findOne({name:"Atalia"}, (error,document)=> {
+    //     if(error) {
+    //         return console.log("Unable to fetch user");
+    //     }
+    //     console.log(document);
+    // })
+
+    // db.collection('users').find({age:29}).toArray((error,documents)=> { //return a cursor/pointer, and we can run all sort of methods on it
+    //     if(error) {
+    //         return console.log("Unable to fetch user");
+    //     }
+    //     console.log(documents);
+    // }) 
+
+    // db.collection('tasks').findOne({_id: new ObjectID("5f8ece4cac2e8f13442f6b62")}, (error,document)=> {
+    //     if(error) {
+    //         return console.log("Unable to fetch user");
+    //     }
+    //     console.log(document);
+    // })
+
+    // db.collection('tasks').find({status:true}).toArray((error,documents)=> { 
+    //     if(error) {
+    //         return console.log("Unable to fetch user");
+    //     }
+    //     console.log(documents);
+    // })
+    
+    ////    update ////
+
+    //update one
+    // const updatePromise = db.collection('users').updateOne({
+    //     _id: new ObjectID("5f8ecb280c5db929c86d328e")
+    // }, {
+    //     $set: { //update operators: allows us to set new values for the fields in the document 
+    //         name: "mucharsky"
+    //     },
+    //     $inc: {
+    //         age: 1
+    //     }
+    // })
+
+    // updatePromise.then((result)=> {
+    //     console.log(result)
+    // }).catch((err)=> {
+    //     console.log(err);
+    // })
+
+    //update many
+    // db.collection('tasks').updateMany({
+    //     status: false
+    // }, {
+    //     $set: {
+    //         status: true
+    //     }
+    // }).then((result)=> {
+    //     console.log(result);
+    // }).catch((err)=> {
+    //     console.log(err);
+    // })
+
+    ///    Delete ///
+    db.collection('users').deleteMany({
+        age: 29
+    }).then((result)=> {
+        console.log(result);
+    }).catch((error)=> {
+        console.log(error);
     })
 
-    db.collection('users').find({age:29}).toArray((error,documents)=> { //return a cursor/pointer, and we can run all sort of methods on it
-        if(error) {
-            return console.log("Unable to fetch user");
-        }
-        console.log(documents);
-    }) 
 
-    db.collection('tasks').findOne({_id: new ObjectID("5f8ece4cac2e8f13442f6b62")}, (error,document)=> {
-        if(error) {
-            return console.log("Unable to fetch user");
-        }
-        console.log(document);
+    db.collection('tasks').deleteOne({
+        task: "laundery"
+    }).then((result)=> {
+        console.log(result);
+    }).catch((error)=> {
+        console.log(error);
     })
-
-    db.collection('tasks').find({status:true}).toArray((error,documents)=> { 
-        if(error) {
-            return console.log("Unable to fetch user");
-        }
-        console.log(documents);
-    }) 
 
 })
 
