@@ -20,14 +20,29 @@ app.post("/restaurant", (req, res) => {
     })
 })
 
-app.get("/restaurant", (req,res)=> {
-    Restaurant.find({}).then((restaurants)=> {
+app.get("/restaurant", (req, res) => {
+    Restaurant.find({}).then((restaurants) => {
         res.send(restaurants);
-    }).catch((err)=> {
+    }).catch((err) => {
         res.status(500).send(err)
     }); //will fetch all restaurants stored in the database. returns a promise
 
 })
+
+///////////// promise chaining ////////////
+app.get("/restaurant/countbucuisine/:cuisine", (req, res) => {
+    const cuisine = req.params.cuisine;
+    Restaurant.find({ cuisine: cuisine }).then((restaurants) => {
+        res.send(restaurants);
+        return Restaurant.countDocuments({ cuisine: cuisine }).then((result) => {
+            console.log(result);
+        }).catch((err) => {
+            res.status(500).send(err)
+        }) 
+
+    })
+})
+
 
 app.listen(port, () => {
     console.log(`server is up on port ${port}`);
