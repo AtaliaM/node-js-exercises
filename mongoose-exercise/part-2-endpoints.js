@@ -3,7 +3,7 @@ const mongoose = require('./mongoose');
 const Restaurant = require('./part-1');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 //customize our server
 app.use(express.json()) //automatically parse incoming json to an object so we can access it in our req handlers
@@ -29,7 +29,7 @@ app.get("/restaurant", (req, res) => {
 
 })
 
-///////////// promise chaining ////////////
+// ///////////// promise chaining //////////////
 app.get("/restaurant/countbucuisine/:cuisine", (req, res) => {
     const cuisine = req.params.cuisine;
     Restaurant.find({ cuisine: cuisine }).then((restaurants) => {
@@ -42,6 +42,23 @@ app.get("/restaurant/countbucuisine/:cuisine", (req, res) => {
 
     })
 })
+
+////////////// async await ///////////////
+
+app.get("/restaurant/countbucuisine2/:cuisine", async (req, res) => {
+    const cuisine = req.params.cuisine;
+    try {
+        const result = await Restaurant.find({ cuisine: cuisine });
+        res.send(result);
+        const result2 = await Restaurant.countDocuments({ cuisine: cuisine });
+        console.log(result2);
+    }
+    catch(err) {
+        res.status(500).send(err);
+    }
+})
+
+
 
 
 app.listen(port, () => {

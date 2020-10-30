@@ -14,10 +14,10 @@ const validator = require('validator');
 // Create 5 different objects and save them to your collection.
 
 
-mongoose.connect('mongodb://127.0.0.1:27017/restaurant-manager-api', {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-})
+// mongoose.connect('mongodb://127.0.0.1:27017/restaurant-manager-api', {
+//     useNewUrlParser: true,
+//     useCreateIndex: true,
+// })
 
 const addressSchema = new mongoose.Schema({
     building: {
