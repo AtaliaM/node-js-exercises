@@ -11,7 +11,7 @@ app.use(express.json()) //automatically parse incoming json to an object so we c
 app.post("/restaurant", (req, res) => {
     const restaurant = new Restaurant(req.body);
 
-    console.log(restaurant);
+    // console.log(restaurant);
     restaurant.save().then(() => {
         res.status(201).send(restaurant);
     }).catch((e) => {
@@ -29,7 +29,49 @@ app.get("/restaurant", (req, res) => {
 
 })
 
-// ///////////// promise chaining //////////////
+//update restaurant by id//
+app.patch("/restaurant/:id", async(req,res)=> {
+    const updates = Object.keys(req.body);
+    const allowdUpdates = ["name", "borough", "cuisine", "address"]
+    const isValidOperation = updates.every((update)=> {
+        return allowdUpdates.includes(update);
+    })
+
+    if(!isValidOperation) {
+        return res.status(400).send({error: "Invalid update"});
+    }
+
+    try {
+        const restaurant = await Restaurant.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true});
+
+        if (!restaurant) {
+            return res.status(404).send()
+        }
+
+        res.send(restaurant);
+    }
+    catch (e) {
+        res.status(400).send(e);
+    }
+})
+
+//delete restaurant by id//
+
+app.delete("/restaurant/:id", async (req,res)=> {
+    try {
+        const restaurant = await Restaurant.findByIdAndDelete(req.params.id);
+
+        if(!restaurant) {
+            return res.status(404).send();
+        }
+        res.send(restaurant);
+    }
+    catch(e) {
+        res.status(500).send(e);
+    }
+})
+
+/////////////// promise chaining //////////////
 app.get("/restaurant/countbucuisine/:cuisine", (req, res) => {
     const cuisine = req.params.cuisine;
     Restaurant.find({ cuisine: cuisine }).then((restaurants) => {
