@@ -1,10 +1,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const fs = require("fs");
+// const cors = require("cors");
 
 const app = express();
 app.use(bodyParser.json());
-const port = process.env.PORT || 7000;
+const port = process.env.PORT || 8000;
 
 let users;
 let questions;
