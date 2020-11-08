@@ -30,6 +30,16 @@ app.post("/users", async (req, res) => {
     // })
 })
 
+app.post("/users/login", async(req,res)=> {
+    try {
+        const user = await User.findByCredentials(req.body.email, req.body.password);
+
+        res.send(user);
+    } catch(e) {
+        res.status(400).send(e)
+    }
+})
+
 app.get("/users", async(req,res)=> {
 
     try {
@@ -85,7 +95,12 @@ app.patch("/users/:id", async(req,res)=> {
         return res.status(400).send({error: "invalid update"});
     }
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators:true});
+        const user = await User.findById(req.params.id);
+        updates.forEach((update)=> {
+            user[update] = req.body[update]
+        })
+        await user.save();
+        // const user = await User.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators:true});
 
         if(!user) {
             return res.status(404).send()
@@ -144,7 +159,12 @@ app.patch("/tasks/:id", async(req,res)=> {
     }
 
     try {
-        const task = await Task.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true});
+        const task = await Task.findById(req.params.id);
+        updates.forEach((update)=> {
+            task[update] = req.body[update];
+        })
+        await task.save();
+        // const task = await Task.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true});
 
         if (!task) {
             return res.status(404).send();
@@ -218,3 +238,26 @@ app.delete("/tasks/:id", async (req,res)=> {
 app.listen(port, () => {
     console.log(`server is up on port ${port}`);
 })
+
+// const bcrypt = require("bcryptjs");
+const jwt = require('jsonwebtoken');
+
+const myfunction = async () => {
+    // const password = "12345red!";
+    // const hashedPassword = await bcrypt.hash(password,8); //the num indicates how many times the hash algorithme is executed
+
+    // console.log(password);
+    // console.log(hashedPassword);
+
+    // const isMatched = await bcrypt.compare("12345red!", hashedPassword); //comparing a new input to the stored hash
+    // console.log(isMatched);
+
+    const token = jwt.sign({_id: "skfjgwrku"}, "thisisaseries", {expiresIn: "0 second"});
+    console.log(token);
+
+    //varyfing our token
+    const data = jwt.verify(token, "thisisaseries");
+    console.log(data);
+
+}
+myfunction();
