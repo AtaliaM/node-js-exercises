@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({ //we are defining a schema and passing it to User so we can take advantage of middleware
     name: {
@@ -39,9 +40,37 @@ const userSchema = new mongoose.Schema({ //we are defining a schema and passing 
                 throw new Error("Password cannot contain 'password'");
             }
         }
-    }})
+    },
+    tokens: [{ //array of objects
+        token: {
+            type: String,
+            required:true,
 
-    userSchema.statics.findByCredentials = async (email,password) => {
+        }
+    }]
+})
+
+    userSchema.methods.toJSON = function(){
+        const user = this;
+        const userObject = user.toObject(); //gives back raw profile data
+
+        delete userObject.password;
+        delete userObject.tokens;
+
+        return userObject;
+    }
+
+    userSchema.methods.generateAuthToken = async function () { //instances method
+        const user = this;
+        const token = jwt.sign({_id: user._id.toString()}, 'thisismycourse');
+        //generating tokens and saving them to the database
+        user.tokens = user.tokens.concat({token});
+        await user.save();
+
+        return token;
+    }
+
+    userSchema.statics.findByCredentials = async (email,password) => { //model method
         const user = await User.findOne({email});
 
         if(!user) {
