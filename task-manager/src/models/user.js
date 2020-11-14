@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const Task = require("./tasks");
 
 const userSchema = new mongoose.Schema({ //we are defining a schema and passing it to User so we can take advantage of middleware
     name: {
@@ -50,6 +51,14 @@ const userSchema = new mongoose.Schema({ //we are defining a schema and passing 
     }]
 })
 
+//virtual property: a relationship between 2 entities. it is NOT stored in the database. it's only for mongoose - to know the relation between the 2 entities
+
+    userSchema.virtual('tasks', {
+        ref: 'Task',
+        localField: '_id',
+        foreignField: 'owner',
+    })
+
     userSchema.methods.toJSON = function(){
         const user = this;
         const userObject = user.toObject(); //gives back raw profile data
@@ -96,6 +105,15 @@ const userSchema = new mongoose.Schema({ //we are defining a schema and passing 
 
 
         next() //calling next when we are done
+    })
+
+    //delete user tasks when user is removed//
+    userSchema.pre("remove", async function(next) {
+        const user = this;
+
+       await Task.deleteMany({owner: user._id})
+
+        next();
     })
 
 //defining a model

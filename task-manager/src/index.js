@@ -50,3 +50,19 @@ myfunction();
 //     name: "meli"
 // }
 // console.log(JSON.stringify(pet)); //when we call res.send, it's calling JSON.stringify behind the scense
+
+const Task = require("./models/tasks");
+const User = require("./models/user");
+const { findById } = require('./models/tasks');
+
+const main = async () => {
+    // const task = await Task.findById("5fad85da51d1693adcc8b376");
+    // await task.populate('owner').execPopulate(); //allows us to populate data from a relationship, in this case: from id to the entire profile
+    // console.log(task);
+
+    const user = await User.findById("5fad85a851d1693adcc8b374");
+    await user.populate('tasks').execPopulate();
+    console.log(user.tasks);
+}
+
+main();

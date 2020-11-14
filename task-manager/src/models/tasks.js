@@ -12,7 +12,13 @@ const Task = mongoose.model('Task', {
     complete: {
         type: Boolean,
         default: false
+    },
+    owner: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'   //reference to the user model
     }
+
 })
 
 module.exports = Task
