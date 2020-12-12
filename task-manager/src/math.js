@@ -3,7 +3,17 @@ const calculateTip = (total, tipPercent = .25) => {
     return total + tip;
 }
 
+const farenheitToCelsius = (temp) => {
+    return (temp - 32) / 1.8;
+}
+
+const celsiusToFarenheit = (temp) => {
+    return (temp * 1.8) + 32;
+}
+
 //for exporting several objects//
 module.exports = {
-    calculateTip
+    calculateTip,
+    farenheitToCelsius,
+    celsiusToFarenheit
 }
