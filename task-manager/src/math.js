@@ -15,10 +15,15 @@ const pow = (num) => {
     return (num ** 2);
 }
 
+const add = (a,b) => {
+    return (a+b);
+}
+
 //for exporting several objects//
 module.exports = {
     calculateTip,
     farenheitToCelsius,
     celsiusToFarenheit,
-    pow
+    pow,
+    add
 }

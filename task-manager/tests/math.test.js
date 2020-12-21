@@ -1,4 +1,4 @@
-const {calculateTip, celsiusToFarenheit, farenheitToCelsius, pow} = require('../src/math');
+const {calculateTip, celsiusToFarenheit, farenheitToCelsius, pow,add} = require('../src/math');
 
 test("hello", ()=> {
 //nothing
@@ -29,6 +29,10 @@ test("should convert celsius to farenheit", ()=> {
 test("should calculate power of num", ()=> {
     const result = pow(4);
     expect(result).toBe(16);
+})
+test("should calculate num+num", ()=> {
+    const result = add(4,-2);
+    expect(result).toBe(2);
 })
 
 // test("fail", ()=> {
