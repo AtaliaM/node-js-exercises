@@ -11,9 +11,14 @@ const celsiusToFarenheit = (temp) => {
     return (temp * 1.8) + 32;
 }
 
+const pow = (num) => {
+    return (num ** 2);
+}
+
 //for exporting several objects//
 module.exports = {
     calculateTip,
     farenheitToCelsius,
-    celsiusToFarenheit
+    celsiusToFarenheit,
+    pow
 }
